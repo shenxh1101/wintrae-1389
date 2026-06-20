@@ -1,0 +1,262 @@
+{
+  "summary": {
+    "total_exams": 2,
+    "total_students": 4,
+    "total_results": 8,
+    "duplicate_count": 2,
+    "error_count": 1
+  },
+  "exam_info": [
+    {
+      "exam_index": 1,
+      "paper_id": "c1be1dd1",
+      "student_count": 4,
+      "max_score": 9.0
+    },
+    {
+      "exam_index": 2,
+      "paper_id": "7ae21f37",
+      "student_count": 5,
+      "max_score": 11.0
+    }
+  ],
+  "duplicates": [
+    {
+      "student_id": "S001",
+      "student_name": "学生1",
+      "paper_id": "7ae21f37",
+      "exam_index": 2,
+      "score": 4.0
+    },
+    {
+      "student_id": "S001",
+      "student_name": "学生1",
+      "paper_id": "7ae21f37",
+      "exam_index": 2,
+      "score": 11.0
+    }
+  ],
+  "errors": [
+    "学生 S001 在试卷 7ae21f37 有 2 条重复记录"
+  ],
+  "student_summary": [
+    {
+      "student_id": "S004",
+      "student_name": "学生4",
+      "total_score": 16.0,
+      "max_possible_score": 20.0,
+      "avg_score": 8.0,
+      "exam_count": 2,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 8.0,
+          "max_score": 9.0,
+          "percentage": 88.9,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 8.0,
+          "max_score": 11.0,
+          "percentage": 72.7,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S001",
+      "student_name": "学生1",
+      "total_score": 14.0,
+      "max_possible_score": 20.0,
+      "avg_score": 7.0,
+      "exam_count": 2,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 3.0,
+          "max_score": 9.0,
+          "percentage": 33.3,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 11.0,
+          "max_score": 11.0,
+          "percentage": 100.0,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S002",
+      "student_name": "学生2",
+      "total_score": 10.0,
+      "max_possible_score": 20.0,
+      "avg_score": 5.0,
+      "exam_count": 2,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 4.0,
+          "max_score": 9.0,
+          "percentage": 44.4,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 6.0,
+          "max_score": 11.0,
+          "percentage": 54.5,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S003",
+      "student_name": "学生3",
+      "total_score": 10.0,
+      "max_possible_score": 20.0,
+      "avg_score": 5.0,
+      "exam_count": 2,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 6.0,
+          "max_score": 9.0,
+          "percentage": 66.7,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 4.0,
+          "max_score": 11.0,
+          "percentage": 36.4,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "student_id": "S004",
+      "student_name": "学生4",
+      "total_score": 16.0,
+      "avg_score": 8.0,
+      "exam_count": 2,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 8.0,
+          "max_score": 9.0,
+          "percentage": 88.9,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 8.0,
+          "max_score": 11.0,
+          "percentage": 72.7,
+          "has_score": true
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "student_id": "S001",
+      "student_name": "学生1",
+      "total_score": 14.0,
+      "avg_score": 7.0,
+      "exam_count": 2,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 3.0,
+          "max_score": 9.0,
+          "percentage": 33.3,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 11.0,
+          "max_score": 11.0,
+          "percentage": 100.0,
+          "has_score": true
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "student_id": "S002",
+      "student_name": "学生2",
+      "total_score": 10.0,
+      "avg_score": 5.0,
+      "exam_count": 2,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 4.0,
+          "max_score": 9.0,
+          "percentage": 44.4,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 6.0,
+          "max_score": 11.0,
+          "percentage": 54.5,
+          "has_score": true
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "student_id": "S003",
+      "student_name": "学生3",
+      "total_score": 10.0,
+      "avg_score": 5.0,
+      "exam_count": 2,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "c1be1dd1",
+          "score": 6.0,
+          "max_score": 9.0,
+          "percentage": 66.7,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "7ae21f37",
+          "score": 4.0,
+          "max_score": 11.0,
+          "percentage": 36.4,
+          "has_score": true
+        }
+      ]
+    }
+  ]
+}

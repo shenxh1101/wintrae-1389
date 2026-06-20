@@ -100,42 +100,52 @@ class ExamGenerator:
                           shuffle_options: bool) -> Tuple[Dict[str, Any],
                                                           Dict[str, str],
                                                           List[str]]:
-        """处理单个题目，包括选项乱序"""
-        options = question.options.copy()
-        option_labels = [chr(65 + i) for i in range(len(options))]
+        """处理单个题目，包括选项乱序
 
-        original_mapping = {label: opt for label, opt in zip(option_labels, options)}
+        选项内容打乱顺序，但标签保持A/B/C/D的顺序。
+        例如原始A=def, B=function, C=func, D=define
+        乱序后可能变成A=function, B=def, C=define, D=func
 
-        if shuffle_options and len(options) > 1:
-            paired = list(zip(option_labels, options))
-            random.shuffle(paired)
-            option_labels, options = zip(*paired)
+        Returns:
+            (处理后的题目字典, 原始标签到新标签的映射, 新的正确答案列表)
+        """
+        original_options = question.options.copy()
+        option_labels = [chr(65 + i) for i in range(len(original_options))]
+        original_content_by_label = {label: content for label, content in zip(option_labels, original_options)}
 
-        new_mapping = {}
-        for i, (orig_label, new_label) in enumerate(
-                zip(original_mapping.keys(), option_labels)):
-            new_mapping[new_label] = orig_label
+        shuffled_options = original_options.copy()
+        if shuffle_options and len(original_options) > 1:
+            random.shuffle(shuffled_options)
+
+        new_options = {label: content for label, content in zip(option_labels, shuffled_options)}
+
+        original_label_to_new_label = {}
+        new_label_to_original_label = {}
+        for new_label, new_content in new_options.items():
+            for orig_label, orig_content in original_content_by_label.items():
+                if new_content == orig_content:
+                    original_label_to_new_label[orig_label] = new_label
+                    new_label_to_original_label[new_label] = orig_label
+                    break
 
         new_correct_answer = []
         for orig_ans in question.correct_answer:
-            for new_label, orig_label in new_mapping.items():
-                if orig_label == orig_ans:
-                    new_correct_answer.append(new_label)
-                    break
+            new_label = original_label_to_new_label.get(orig_ans)
+            if new_label:
+                new_correct_answer.append(new_label)
 
         processed_q = {
             'display_num': display_num,
             'question_id': question.question_id,
             'content': question.content,
-            'options': {label: opt for label, opt in zip(option_labels, options)},
+            'options': new_options,
             'question_type': question.question_type.value,
             'difficulty': question.difficulty.value,
             'knowledge_points': question.knowledge_points,
             'score': question.score,
         }
 
-        reverse_mapping = {v: k for k, v in new_mapping.items()}
-        return processed_q, reverse_mapping, sorted(new_correct_answer)
+        return processed_q, original_label_to_new_label, sorted(new_correct_answer)
 
     def generate_answer_sheet(self, exam_paper: ExamPaper,
                               include_options: bool = True) -> str:
@@ -342,3 +352,128 @@ class ExamGenerator:
         files['answer_key'] = answer_key_file
 
         return files
+
+    def generate_version_comparison(self, papers: List[ExamPaper]) -> str:
+        """生成多版本试卷对照
+
+        显示同一道题在不同版本中的题号、选项顺序、正确答案，
+        方便老师发卷前抽查有没有乱序错位。
+
+        Args:
+            papers: 多份试卷列表（同一套题的不同版本）
+
+        Returns:
+            对照报告文本
+        """
+        if not papers:
+            return "没有试卷可对照"
+
+        lines = []
+        lines.append("=" * 90)
+        lines.append(" " * 35 + "多版本试卷对照表")
+        lines.append("=" * 90)
+        lines.append("")
+        lines.append(f"对照版本: {', '.join([p.version for p in papers])}")
+        lines.append(f"题目数量: {len(papers[0].questions)} 题")
+        lines.append("")
+        lines.append("-" * 90)
+        lines.append("")
+
+        all_question_ids = set()
+        for p in papers:
+            for q in p.questions:
+                all_question_ids.add(q['question_id'])
+
+        question_info_by_id = {}
+        for p in papers:
+            for q in p.questions:
+                qid = q['question_id']
+                if qid not in question_info_by_id:
+                    question_info_by_id[qid] = {
+                        'content': q['content'],
+                        'question_type': q['question_type'],
+                        'score': q['score'],
+                        'knowledge_points': q['knowledge_points'],
+                    }
+
+        version_question_map = {}
+        for p in papers:
+            vmap = {}
+            for q in p.questions:
+                vmap[q['question_id']] = q
+            version_question_map[p.version] = vmap
+
+        first_paper = papers[0]
+        sorted_question_ids = [q['question_id'] for q in first_paper.questions]
+
+        for idx, qid in enumerate(sorted_question_ids, 1):
+            info = question_info_by_id[qid]
+            lines.append(f"【第{idx}题 - {qid}】")
+            lines.append(f"  题目: {info['content']}")
+            lines.append(f"  题型: {info['question_type']}  分值: {info['score']}分  "
+                        f"知识点: {', '.join(info['knowledge_points'])}")
+            lines.append("")
+
+            header = f"{'版本':<8}"
+            header += f"{'题号':<8}"
+            header += f"{'正确答案':<12}"
+            header += "选项顺序（左→右对应A→D）"
+            lines.append(f"  {header}")
+            lines.append(f"  {'-' * 80}")
+
+            for p in papers:
+                q = version_question_map[p.version].get(qid)
+                if q:
+                    display_num = q['display_num']
+                    correct = "".join(sorted(p.answer_key[qid]))
+                    options_list = [q['options'][label] for label in sorted(q['options'].keys())]
+                    options_str = " | ".join(options_list)
+
+                    line = f"  {p.version:<8}"
+                    line += f"{display_num:<8}"
+                    line += f"{correct:<12}"
+                    line += options_str[:50]
+                    lines.append(line)
+                else:
+                    lines.append(f"  {p.version:<8}  （无此题）")
+
+            lines.append("")
+            lines.append(f"  选项映射对照表（原选项 → 新选项）:")
+            lines.append(f"    原选项 | {' | '.join([p.version for p in papers])}")
+            lines.append(f"    {'-' * 60}")
+
+            original_labels = sorted(first_paper.option_mapping[qid].keys())
+            for orig_label in original_labels:
+                row = f"    {orig_label}     |"
+                for p in papers:
+                    new_label = p.option_mapping[qid].get(orig_label, '?')
+                    row += f" {new_label}  |"
+                lines.append(row)
+
+            lines.append("")
+            lines.append("-" * 90)
+            lines.append("")
+
+        lines.append("=" * 90)
+        lines.append("说明：")
+        lines.append("  1. 「正确答案」列显示的是该版本的正确选项字母")
+        lines.append("  2. 「选项顺序」列显示各选项的实际内容，从左到右对应A、B、C、D")
+        lines.append("  3. 「选项映射对照表」显示原始选项对应到各版本的哪个选项")
+        lines.append("  4. 抽查方法：找一道题，核对「正确答案」字母对应「选项顺序」中的内容是否正确")
+        lines.append("=" * 90)
+
+        return "\n".join(lines)
+
+    def export_version_comparison(self, papers: List[ExamPaper],
+                                  output_dir: str,
+                                  file_prefix: str = "exam") -> str:
+        """导出版本对照文件"""
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+
+        content = self.generate_version_comparison(papers)
+        output_file = os.path.join(output_dir, f"{file_prefix}_version_comparison.txt")
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+        return output_file
