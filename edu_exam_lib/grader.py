@@ -17,19 +17,23 @@ class ExamGrader:
 
     def grade(self, student_answer: StudentAnswer) -> ExamResult:
         """对学生答案进行判分"""
-        is_valid, errors = student_answer.validate(self.exam_paper)
+        if student_answer.has_duplicates:
+            dup_detail = ", ".join(
+                f"{qid}(出现{student_answer._question_id_counts[qid]}次)" 
+                for qid in student_answer.duplicate_question_ids
+            )
+            raise ValueError(
+                f"检测到重复题号，无法进行批改。请先修正重复答案后再提交。"
+                f"重复题号: {dup_detail}"
+            )
+
+        is_valid, errors, missing = student_answer.validate(self.exam_paper)
         if not is_valid:
             raise ValueError(f"学生答案无效: {'; '.join(errors)}")
 
-        missing_questions = []
-        question_ids = [q['question_id'] for q in self.exam_paper.questions]
-        for qid in question_ids:
-            if qid not in student_answer.answers:
-                missing_questions.append(qid)
-
-        if missing_questions:
+        if missing:
             raise ValueError(
-                f"存在缺失答案的题目: {', '.join(missing_questions)}"
+                f"存在缺失答案的题目: {', '.join(missing)}"
             )
 
         question_results = []
@@ -165,29 +169,7 @@ class ExamGrader:
 
     def validate_answers(self, student_answer: StudentAnswer) -> Tuple[bool, List[str], List[str]]:
         """验证学生答案，返回是否有效、错误列表、缺失题目列表"""
-        errors = []
-        question_ids = {q['question_id'] for q in self.exam_paper.questions}
-
-        for qid in student_answer.answers:
-            if qid not in question_ids:
-                errors.append(f"题号 {qid} 不在试卷中")
-
-        seen = set()
-        duplicates = []
-        for qid in student_answer.answers:
-            if qid in seen:
-                if qid not in duplicates:
-                    duplicates.append(qid)
-            seen.add(qid)
-        if duplicates:
-            errors.append(f"存在重复题号: {', '.join(duplicates)}")
-
-        missing = []
-        for qid in question_ids:
-            if qid not in student_answer.answers:
-                missing.append(qid)
-
-        return len(errors) == 0, errors, missing
+        return student_answer.validate(self.exam_paper)
 
     def generate_grade_report(self, result: ExamResult) -> str:
         """生成判分报告文本"""
@@ -273,6 +255,23 @@ class ExamGrader:
         missing_answers: List[Dict[str, Any]] = []
         errors: List[str] = []
 
+        exam_info = []
+        for exam_idx, results in enumerate(results_list, 1):
+            if results:
+                exam_info.append({
+                    'exam_index': exam_idx,
+                    'paper_id': results[0].paper_id,
+                    'student_count': len(results),
+                    'max_score': results[0].max_score,
+                })
+            else:
+                exam_info.append({
+                    'exam_index': exam_idx,
+                    'paper_id': f'unknown_{exam_idx}',
+                    'student_count': 0,
+                    'max_score': 0,
+                })
+
         seen = defaultdict(list)
 
         for exam_idx, results in enumerate(results_list, 1):
@@ -302,9 +301,70 @@ class ExamGrader:
 
         merged.sort(key=lambda x: x.student_id)
 
+        student_summary = {}
+        student_exams = defaultdict(dict)
+
+        for exam_idx, results in enumerate(results_list, 1):
+            for result in results:
+                sid = result.student_id
+                if sid not in student_summary:
+                    student_summary[sid] = {
+                        'student_id': sid,
+                        'student_name': result.student_name,
+                        'total_score': 0.0,
+                        'max_possible_score': 0.0,
+                        'avg_score': 0.0,
+                        'exam_count': 0,
+                        'exam_scores': [],
+                        'missing_exams': [],
+                    }
+                student_exams[sid][exam_idx] = result
+
+        for sid, summary in student_summary.items():
+            total_score = 0.0
+            max_possible = 0.0
+            exam_count = 0
+            exam_scores = []
+            missing_exams = []
+
+            for exam_idx in range(1, len(results_list) + 1):
+                info = exam_info[exam_idx - 1]
+                if exam_idx in student_exams[sid]:
+                    result = student_exams[sid][exam_idx]
+                    exam_scores.append({
+                        'exam_index': exam_idx,
+                        'paper_id': result.paper_id,
+                        'score': result.total_score,
+                        'max_score': result.max_score,
+                        'percentage': round(result.percentage, 1),
+                        'has_score': True,
+                    })
+                    total_score += result.total_score
+                    max_possible += result.max_score
+                    exam_count += 1
+                else:
+                    exam_scores.append({
+                        'exam_index': exam_idx,
+                        'paper_id': info['paper_id'],
+                        'score': 0,
+                        'max_score': info['max_score'],
+                        'percentage': 0,
+                        'has_score': False,
+                    })
+                    missing_exams.append(exam_idx)
+
+            summary['total_score'] = round(total_score, 1)
+            summary['max_possible_score'] = round(max_possible, 1)
+            summary['avg_score'] = round(total_score / exam_count, 1) if exam_count > 0 else 0.0
+            summary['exam_count'] = exam_count
+            summary['exam_scores'] = exam_scores
+            summary['missing_exams'] = missing_exams
+
         return MergeResult(
             merged_results=merged,
             duplicates=duplicates,
             missing_answers=missing_answers,
             errors=errors,
+            exam_info=exam_info,
+            student_summary=student_summary,
         )

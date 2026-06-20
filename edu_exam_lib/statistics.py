@@ -10,8 +10,9 @@ from .core import ExamResult, QuestionResult
 class ExamStatistics:
     """考试统计分析类"""
 
-    def __init__(self, results: List[ExamResult]):
+    def __init__(self, results: List[ExamResult], allow_multi_paper: bool = False):
         self.results = results
+        self.allow_multi_paper = allow_multi_paper
         self._validate_results()
 
     def _validate_results(self):
@@ -20,9 +21,13 @@ class ExamStatistics:
             raise ValueError("没有考试结果数据")
 
         paper_ids = {r.paper_id for r in self.results}
-        if len(paper_ids) > 1:
+        self.paper_ids = sorted(paper_ids)
+        self.is_multi_paper = len(paper_ids) > 1
+
+        if not self.allow_multi_paper and self.is_multi_paper:
             raise ValueError(
-                f"统计分析要求使用同一份试卷的结果，检测到 {len(paper_ids)} 份不同试卷"
+                f"统计分析要求使用同一份试卷的结果，检测到 {len(paper_ids)} 份不同试卷。"
+                f"如需跨试卷统计，请设置 allow_multi_paper=True"
             )
 
     def get_score_distribution(self,
@@ -251,10 +256,17 @@ class ExamStatistics:
         """生成统计报告文本"""
         lines = []
         lines.append("=" * 80)
-        lines.append(" " * 30 + "班级考试统计分析报告")
+        if self.is_multi_paper:
+            lines.append(" " * 25 + "多场次考试合并统计分析报告")
+        else:
+            lines.append(" " * 30 + "班级考试统计分析报告")
         lines.append("=" * 80)
         lines.append("")
-        lines.append(f"试卷ID: {self.results[0].paper_id}")
+        if self.is_multi_paper:
+            lines.append(f"合并场次: {len(self.paper_ids)} 场")
+            lines.append(f"涉及试卷: {', '.join(self.paper_ids)}")
+        else:
+            lines.append(f"试卷ID: {self.results[0].paper_id}")
         lines.append(f"统计时间: 本次分析共 {len(self.results)} 名学生")
         lines.append("")
         lines.append("-" * 80)
@@ -382,3 +394,102 @@ class ExamStatistics:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         else:
             raise ValueError(f"不支持的导出格式: {format}")
+
+    def get_multi_paper_summary(self) -> Dict[str, Any]:
+        """获取跨试卷汇总（合并后的汇总信息"""
+        if not self.is_multi_paper:
+            return {}
+
+        paper_info = {}
+        for pid in self.paper_ids:
+            paper_results = [r for r in self.results if r.paper_id == pid]
+            percentages = [r.percentage for r in paper_results]
+            paper_info[pid] = {
+                'paper_id': pid,
+                'student_count': len(paper_results),
+                'avg_percentage': round(sum(percentages) / len(percentages) if percentages else 0, 2),
+                'max_percentage': max(percentages) if percentages else 0,
+                'min_percentage': min(percentages) if percentages else 0,
+                'pass_rate': round(sum(1 for p in percentages if p >= 60) / len(percentages) * 100, 2) if percentages else 0,
+            }
+
+        student_overall = defaultdict(lambda: {
+            'total_score': 0.0, 'total_max': 0.0, 'paper_count': 0,
+            'scores': []})
+        for r in self.results:
+            sid = r.student_id
+            student_overall[sid]['student_id'] = sid
+            student_overall[sid]['student_name'] = r.student_name
+            student_overall[sid]['total_score'] += r.total_score
+            student_overall[sid]['total_max'] += r.max_score
+            student_overall[sid]['paper_count'] += 1
+            student_overall[sid]['scores'].append({
+                'paper_id': r.paper_id,
+                'score': r.total_score,
+                'max_score': r.max_score,
+                'percentage': r.percentage,
+            })
+
+        for sid, info in student_overall.items():
+            info['total_percentage'] = round(
+                info['total_score'] / info['total_max'] * 100, 2) if info['total_max'] > 0 else 0
+            info['avg_percentage'] = round(
+                sum(s['percentage'] for s in info['scores']) / info['paper_count'], 2) if info['paper_count'] > 0 else 0
+
+        sorted_students = sorted(
+            student_overall.values(),
+            key=lambda x: x['total_percentage'],
+            reverse=True
+        )
+
+        return {
+            'paper_info': paper_info,
+            'student_summary': sorted_students,
+            'total_papers': len(self.paper_ids),
+            'total_students': len(student_overall),
+        }
+
+    def generate_multi_paper_report(self) -> str:
+        """生成跨试卷统计报告"""
+        if not self.is_multi_paper:
+            return "当前没有跨试卷数据，无法生成跨试卷报告"
+
+        summary = self.get_multi_paper_summary()
+        lines = []
+        lines.append("=" * 80)
+        lines.append(" " * 25 + "多场次考试合并统计报告")
+        lines.append("=" * 80)
+        lines.append("")
+        lines.append(f"合并场次: {summary['total_papers']} 场  总学生数: {summary['total_students']} 人")
+        lines.append("")
+        lines.append("-" * 80)
+        lines.append("")
+        lines.append("一、各场次成绩概况")
+        lines.append("")
+        for pid, info in summary['paper_info'].items():
+            lines.append(f"  试卷 {pid}:")
+            lines.append(f"    参考人数: {info['student_count']} 人")
+            lines.append(f"    平均分: {info['avg_percentage']:.1f}%  "
+                        f"最高分: {info['max_percentage']:.1f}%  "
+                        f"最低分: {info['min_percentage']:.1f}%")
+            lines.append(f"    及格率: {info['pass_rate']:.1f}%")
+
+        lines.append("")
+        lines.append("-" * 80)
+        lines.append("")
+        lines.append("二、学生总分排名 (前15名)")
+        lines.append("")
+        lines.append(f"{'排名':<4}{'学号':<10}{'姓名':<10}{'场次':<8}"
+                    f"{'总分':<10}{'平均分':<10}{'总分%':<8}")
+        lines.append("-" * 60)
+
+        for rank, s in enumerate(summary['student_summary'][:15], 1):
+            lines.append(f"{rank:<4}{s['student_id']:<10}{s['student_name']:<10}"
+                        f"{s['paper_count']:<8}"
+                        f"{s['total_score']:<10.1f}{s['avg_percentage']:<10.1f}"
+                        f"{s['total_percentage']:<8.1f}")
+
+        lines.append("")
+        lines.append("=" * 80)
+
+        return "\n".join(lines)

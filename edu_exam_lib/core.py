@@ -3,7 +3,7 @@
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Any, Tuple
+from typing import List, Dict, Optional, Any, Tuple, Union
 from enum import Enum
 import uuid
 
@@ -209,34 +209,89 @@ class StudentAnswer:
     student_id: str
     student_name: str
     paper_id: str
-    answers: Dict[str, List[str]]
+    answers: Union[Dict[str, Any], List[Dict[str, Any]]]
     submitted_at: Optional[str] = None
 
     def __post_init__(self):
-        normalized = {}
-        for qid, ans in self.answers.items():
-            if isinstance(ans, str):
-                normalized[qid] = [ans.upper()]
-            else:
-                normalized[qid] = [a.upper() for a in ans]
-        self.answers = normalized
+        if isinstance(self.answers, list):
+            self.raw_answers = self.answers.copy()
+        else:
+            self.raw_answers = None
 
-    def validate(self, exam_paper: ExamPaper) -> Tuple[bool, List[str]]:
-        """验证答案与试卷是否匹配"""
+        if isinstance(self.answers, list):
+            seen = {}
+            for entry in self.answers:
+                qid = entry.get('question_id') or entry.get('qid')
+                if qid:
+                    if qid in seen:
+                        seen[qid] += 1
+                    else:
+                        seen[qid] = 1
+            self._duplicate_question_ids = [qid for qid, count in seen.items() if count > 1]
+            self._question_id_counts = seen
+
+            normalized = {}
+            for entry in self.answers:
+                qid = entry.get('question_id') or entry.get('qid')
+                ans = entry.get('answer') or entry.get('answers') or entry.get('ans')
+                if qid:
+                    if isinstance(ans, str):
+                        normalized[qid] = [ans.upper()]
+                    elif ans is not None:
+                        normalized[qid] = [a.upper() for a in ans]
+                    else:
+                        normalized[qid] = []
+            self.answers = normalized
+        else:
+            self._duplicate_question_ids = []
+            normalized = {}
+            for qid, ans in self.answers.items():
+                if isinstance(ans, str):
+                    normalized[qid] = [ans.upper()]
+                else:
+                    normalized[qid] = [a.upper() for a in ans]
+            self.answers = normalized
+
+    @property
+    def has_duplicates(self) -> bool:
+        """是否有重复题号"""
+        return len(self._duplicate_question_ids) > 0
+
+    @property
+    def duplicate_question_ids(self) -> List[str]:
+        """重复的题号列表"""
+        return self._duplicate_question_ids
+
+    def validate(self, exam_paper: ExamPaper) -> Tuple[bool, List[str], List[str]]:
+        """验证答案与试卷是否匹配
+
+        Returns:
+            (是否有效, 错误列表, 缺失题号列表)
+        """
         errors = []
         question_ids = {q['question_id'] for q in exam_paper.questions}
+
+        if self.has_duplicates:
+            if hasattr(self, '_question_id_counts'):
+                dup_detail = ", ".join(
+                    f"{qid}(出现{self._question_id_counts[qid]}次)" 
+                    for qid in self._duplicate_question_ids
+                )
+            else:
+                dup_detail = ", ".join(
+                    f"{qid}(出现多次)" 
+                    for qid in self._duplicate_question_ids
+                )
+            errors.append(f"存在重复题号: {dup_detail}")
 
         for qid in self.answers:
             if qid not in question_ids:
                 errors.append(f"题号 {qid} 不在试卷中")
 
-        seen = set()
-        for qid in self.answers:
-            if qid in seen:
-                errors.append(f"题号 {qid} 重复")
-            seen.add(qid)
+        answered_ids = set(self.answers.keys())
+        missing = sorted(question_ids - answered_ids)
 
-        return len(errors) == 0, errors
+        return len(errors) == 0, errors, missing
 
 
 @dataclass
@@ -300,6 +355,8 @@ class MergeResult:
     duplicates: List[Dict[str, Any]]
     missing_answers: List[Dict[str, Any]]
     errors: List[str]
+    exam_info: List[Dict[str, Any]] = field(default_factory=list)
+    student_summary: Dict[str, Dict[str, Any]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -307,4 +364,62 @@ class MergeResult:
             'duplicates': self.duplicates,
             'missing_answers': self.missing_answers,
             'errors': self.errors,
+            'exam_info': self.exam_info,
+            'student_summary': self.student_summary,
         }
+
+    def get_student_summary(self, student_id: str) -> Optional[Dict[str, Any]]:
+        """获取指定学生的汇总信息"""
+        return self.student_summary.get(student_id)
+
+    def get_all_students_summary(self) -> List[Dict[str, Any]]:
+        """获取所有学生的汇总信息列表"""
+        return sorted(self.student_summary.values(), key=lambda x: x['total_score'], reverse=True)
+
+    def generate_summary_report(self) -> str:
+        """生成合并汇总报告"""
+        lines = []
+        lines.append("=" * 70)
+        lines.append("多场考试合并汇总报告")
+        lines.append("=" * 70)
+
+        lines.append(f"\n合并场次: {len(self.exam_info)} 场")
+        for i, info in enumerate(self.exam_info, 1):
+            lines.append(f"  场次{i}: 试卷{info['paper_id']} ({info['student_count']}人, 满分{info['max_score']}分)")
+
+        lines.append(f"\n总学生数: {len(self.student_summary)} 人")
+        lines.append(f"合并后总记录: {len(self.merged_results)} 条")
+
+        if self.duplicates:
+            lines.append(f"\n⚠️  重复记录: {len(self.duplicates)} 条")
+            for dup in self.duplicates:
+                lines.append(f"  - {dup['student_name']}({dup['student_id']}) "
+                           f"试卷{dup['paper_id']} 场次{dup['exam_index']} 得分{dup['score']}")
+
+        if self.errors:
+            lines.append(f"\n❌ 错误信息: {len(self.errors)} 条")
+            for err in self.errors:
+                lines.append(f"  - {err}")
+
+        lines.append("\n" + "-" * 70)
+        lines.append("学生成绩汇总 (按总分排序)")
+        lines.append("-" * 70)
+        lines.append(f"{'排名':<4}{'学号':<10}{'姓名':<10}{'总分':<8}{'平均分':<8}"
+                    f"{'参考场次':<10}{'缺考场次':<10}")
+        lines.append("-" * 70)
+
+        for rank, summary in enumerate(self.get_all_students_summary(), 1):
+            missing_exams = summary.get('missing_exams', [])
+            missing_str = ",".join([str(x) for x in missing_exams]) if missing_exams else "-"
+            lines.append(f"{rank:<4}{summary['student_id']:<10}{summary['student_name']:<10}"
+                        f"{summary['total_score']:<8.1f}{summary['avg_score']:<8.1f}"
+                        f"{summary['exam_count']:<10}{missing_str:<10}")
+
+            for exam_info in summary['exam_scores']:
+                status = "✅" if exam_info.get('has_score', True) else "❌缺考"
+                lines.append(f"     场次{exam_info['exam_index']}: "
+                            f"{exam_info.get('score', '缺考')}/{exam_info.get('max_score', '-')} "
+                            f"({exam_info.get('percentage', '-')}%) {status}")
+
+        lines.append("\n" + "=" * 70)
+        return "\n".join(lines)

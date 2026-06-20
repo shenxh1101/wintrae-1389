@@ -111,20 +111,22 @@ def grade_exam(
 
 
 def analyze_results(
-    exam_results: List[ExamResult]
+    exam_results: List[ExamResult],
+    allow_multi_paper: bool = False
 ) -> Dict[str, Any]:
     """
     分析考试结果
 
     Args:
         exam_results: 判分结果列表
+        allow_multi_paper: 是否允许跨试卷统计
 
     Returns:
         包含各种统计信息的字典
     """
-    stats = ExamStatistics(exam_results)
+    stats = ExamStatistics(exam_results, allow_multi_paper=allow_multi_paper)
 
-    return {
+    result = {
         'descriptive': stats.get_descriptive_stats(),
         'score_distribution': stats.get_score_distribution(),
         'knowledge_points': stats.get_knowledge_point_stats(),
@@ -132,4 +134,12 @@ def analyze_results(
         'error_reasons': stats.get_error_reason_stats(),
         'ranking': stats.rank_students(),
         'report': stats.generate_statistics_report(),
+        'is_multi_paper': stats.is_multi_paper,
+        'paper_ids': stats.paper_ids,
     }
+
+    if stats.is_multi_paper:
+        result['multi_paper_summary'] = stats.get_multi_paper_summary()
+        result['multi_paper_report'] = stats.generate_multi_paper_report()
+
+    return result

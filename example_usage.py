@@ -182,23 +182,53 @@ def demo_exam_system():
     print()
 
     print("6. 验证学生答案（错误演示）:")
-    bad_answer = {
+    print("   6.1 字典格式 - 无效题号和缺失答案:")
+    bad_answer_dict = {
         'student_id': 'S999',
         'student_name': '测试学生',
         'paper_id': paper.paper_id,
         'answers': {
             paper.questions[0]['question_id']: ['A'],
             'INVALID_ID': ['B'],
-            paper.questions[1]['question_id']: ['C'],
-            paper.questions[1]['question_id']: ['D'],
         }
     }
-    is_valid, errors, missing = system.validate_student_answer(paper.paper_id, bad_answer)
-    print(f"   是否有效: {is_valid}")
+    is_valid, errors, missing = system.validate_student_answer(paper.paper_id, bad_answer_dict)
+    print(f"      是否有效: {is_valid}")
     if errors:
-        print(f"   错误: {errors}")
+        print(f"      错误: {errors}")
     if missing:
-        print(f"   缺失: {missing}")
+        print(f"      缺失: {missing}")
+
+    print()
+    print("   6.2 列表格式 - 重复题号检测:")
+    qid1 = paper.questions[0]['question_id']
+    qid2 = paper.questions[1]['question_id']
+    bad_answer_list = {
+        'student_id': 'S998',
+        'student_name': '重复学生',
+        'paper_id': paper.paper_id,
+        'answers': [
+            {'question_id': qid1, 'answer': 'A'},
+            {'question_id': qid2, 'answer': 'B'},
+            {'question_id': qid1, 'answer': 'C'},
+            {'question_id': qid2, 'answer': 'D'},
+        ]
+    }
+    is_valid2, errors2, missing2 = system.validate_student_answer(paper.paper_id, bad_answer_list)
+    print(f"      是否有效: {is_valid2}")
+    if errors2:
+        print(f"      错误: {errors2}")
+    if missing2:
+        print(f"      缺失: {missing2}")
+
+    print()
+    print("   6.3 批改时重复题号报错:")
+    try:
+        result = system.grade_exam(paper.paper_id, [bad_answer_list])
+        print(f"      批改成功 - 这不应该发生!")
+    except ValueError as e:
+        print(f"      批改报错（预期行为）:")
+        print(f"      {e}")
     print()
 
     print("7. 批量导入学生答案并批改...")
@@ -300,7 +330,7 @@ def demo_merge_results():
     import random
     random.seed(789)
 
-    for paper in [paper1, paper2]:
+    for paper_idx, paper in enumerate([paper1, paper2], 1):
         qids = [q['question_id'] for q in paper.questions]
         student_answers = []
         for i in range(5):
@@ -319,7 +349,7 @@ def demo_merge_results():
                 'answers': answers,
             })
 
-        if i == 0 and paper == paper2:
+        if paper_idx == 2:
             student_answers.append({
                 'student_id': 'S001',
                 'student_name': '学生1',
@@ -328,29 +358,97 @@ def demo_merge_results():
             })
 
         results = system.grade_exam(paper.paper_id, student_answers)
-        print(f"试卷 {paper.paper_id} 批改完成，共 {len(results)} 份结果")
+        print(f"场次{paper_idx} - 试卷 {paper.paper_id} 批改完成，共 {len(results)} 份结果")
 
     print()
+    print("=" * 50)
     print("合并两场考试结果...")
+    print("=" * 50)
     merge_result = system.merge_exam_results([paper1.paper_id, paper2.paper_id])
 
-    print(f"合并后结果数: {len(merge_result.merged_results)}")
-    if merge_result.duplicates:
-        print(f"检测到重复记录: {len(merge_result.duplicates)} 条")
-        for dup in merge_result.duplicates[:3]:
-            print(f"  {dup['student_name']}({dup['student_id']}) "
-                  f"在第{dup['exam_index']}场考试重复，分数: {dup['score']}")
-    if merge_result.errors:
-        print(f"错误信息:")
-        for err in merge_result.errors:
-            print(f"  {err}")
     print()
+    print("1. 基础信息:")
+    print(f"   合并后结果数: {len(merge_result.merged_results)}")
+    print(f"   涉及学生数: {len(merge_result.student_summary)}")
+    print(f"   合并场次: {len(merge_result.exam_info)} 场")
 
-    print("合并结果统计:")
-    merged_stats = ExamStatistics(merge_result.merged_results)
-    desc = merged_stats.get_descriptive_stats()
-    print(f"  平均分: {desc['mean']:.1f}%, 及格率: {desc['pass_rate']:.1f}%")
-    print(f"  最高分: {desc['max']:.1f}%, 最低分: {desc['min']:.1f}%")
+    print()
+    print("2. 重复记录检测:")
+    if merge_result.duplicates:
+        print(f"   检测到重复记录: {len(merge_result.duplicates)} 条")
+        for dup in merge_result.duplicates:
+            print(f"   - {dup['student_name']}({dup['student_id']}) "
+                  f"试卷{dup['paper_id']} 场次{dup['exam_index']} 得分{dup['score']}")
+    else:
+        print("   无重复记录")
+
+    print()
+    print("3. 错误信息:")
+    if merge_result.errors:
+        for err in merge_result.errors:
+            print(f"   - {err}")
+    else:
+        print("   无错误")
+
+    print()
+    print("4. 学生汇总统计:")
+    print("   " + "-" * 60)
+    print(f"   {'学号':<8}{'姓名':<8}{'场次':<8}{'总分':<10}"
+          f"{'平均分':<10}{'缺考':<8}")
+    print("   " + "-" * 60)
+
+    for summary in merge_result.get_all_students_summary()[:5]:
+        missing = ",".join([str(x) for x in summary['missing_exams']]) if summary['missing_exams'] else "-"
+        print(f"   {summary['student_id']:<8}{summary['student_name']:<8}"
+              f"{summary['exam_count']:<8}"
+              f"{summary['total_score']:<10.1f}{summary['avg_score']:<10.1f}"
+              f"{missing:<8}")
+
+    print()
+    print("5. 各学生各场次成绩:")
+    print("   " + "-" * 60)
+
+    for summary in merge_result.get_all_students_summary()[:3]:
+        print(f"   {summary['student_name']}({summary['student_id']}):")
+        for exam_score in summary['exam_scores']:
+            if exam_score['has_score']:
+                status = "OK"
+                score_str = f"{exam_score['score']}/{exam_score['max_score']} ({exam_score['percentage']}%)"
+            else:
+                status = "缺考"
+                score_str = "0/0"
+            print(f"     场次{exam_score['exam_index']}: {score_str} {status}")
+
+    print()
+    print("6. 跨场次汇总报告:")
+    print("   " + "-" * 60)
+    try:
+        merged_stats = ExamStatistics(merge_result.merged_results, allow_multi_paper=True)
+        desc = merged_stats.get_descriptive_stats()
+        print(f"   总记录数: {desc['count']}")
+        print(f"   平均分: {desc['mean']:.1f}%")
+        print(f"   及格率: {desc['pass_rate']:.1f}%")
+        print(f"   优秀率: {desc['excellent_rate']:.1f}%")
+        print(f"   最高分: {desc['max']:.1f}%")
+        print(f"   最低分: {desc['min']:.1f}%")
+        print()
+
+        multi_report = merged_stats.generate_multi_paper_report()
+        for line in multi_report.split('\n')[:20]:
+            print(f"   {line}")
+    except Exception as e:
+        print(f"   统计时出错: {e}")
+
+    print()
+    print("7. 生成合并汇总报告...")
+    summary_report = merge_result.generate_summary_report()
+    with open('output/merge_summary.txt', 'w', encoding='utf-8') as f:
+        f.write(summary_report)
+    print("   已保存到 output/merge_summary.txt")
+    print()
+    print("   报告预览:")
+    for line in summary_report.split('\n')[:25]:
+        print(f"   {line}")
     print()
 
 
