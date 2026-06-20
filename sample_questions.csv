@@ -1,0 +1,16 @@
+question_id,content,options,correct_answer,knowledge_points,difficulty,question_type,score,explanation,tags
+Q001,Python中用于定义函数的关键字是哪个？,def|function|func|define,A,Python基础|函数定义,easy,single_choice,2,Python使用def关键字定义函数,语法|基础
+Q002,Python列表使用什么符号定义？,[]|{}|()|<>,"A",Python基础|列表,easy,single_choice,2,列表使用方括号[]定义,数据结构
+Q003,以下哪些是Python的关键字？,if|for|then|while,"A|B|D",Python基础|关键字,medium,multiple_choice,3,then不是Python关键字,语法
+Q004,Python中print()是一个内置函数。,正确|错误,A,Python基础|内置函数,easy,true_false,1,print是Python内置函数,基础
+Q005,以下代码的输出是什么？x = 10; print(x > 5 and x < 15),True|False|10|报错,A,Python基础|逻辑运算,medium,single_choice,2,10>5且10<15都为真，结果为True,逻辑运算
+Q006,Python中用于注释的符号是？,#|//|/*|*/,A,Python基础|注释,easy,single_choice,1,Python使用#进行单行注释,语法
+Q007,Python中的字符串可以使用哪些符号表示？,单引号|双引号|三引号|反引号,"A|B|C",Python基础|字符串,easy,multiple_choice,2,字符串可以用单引号、双引号、三引号,字符串
+Q008,Python中len()函数可以获取字符串长度。,正确|错误,A,Python基础|内置函数,easy,true_false,1,len()可以获取字符串、列表等的长度,内置函数
+Q009,以下哪个方法可以将字符串转换为小写？,lower()|down()|small()|tolower(),A,Python基础|字符串方法,medium,single_choice,2,lower()方法将字符串转换为小写,字符串方法
+Q010,Python中的集合(set)有哪些特点？,元素唯一|无序|可索引|可重复,"A|B",Python基础|集合,medium,multiple_choice,3,集合元素唯一且无序，不能通过索引访问,数据结构
+Q011,Python中break语句用于跳出循环。,正确|错误,A,Python基础|流程控制,easy,true_false,1,break用于跳出当前循环,流程控制
+Q012,以下哪个运算符用于判断相等？,==|=|===|!=,A,Python基础|运算符,easy,single_choice,2,==用于判断相等，=用于赋值,运算符
+Q013,Python中可以使用+运算符连接两个列表。,正确|错误,A,Python基础|列表运算,medium,true_false,2,+运算符可以连接两个列表,列表运算
+Q014,以下哪些是Python中的逻辑运算符？,and|or|not|xor,"A|B|C",Python基础|逻辑运算,easy,multiple_choice,2,Python的逻辑运算符是and、or、not,逻辑运算
+Q015,Python中type()函数的作用是？,获取变量类型|修改变量类型|删除变量|创建变量,A,Python基础|内置函数,medium,single_choice,2,type()返回变量的类型,内置函数

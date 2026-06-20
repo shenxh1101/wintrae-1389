@@ -1,0 +1,274 @@
+{
+  "questions": [
+    {
+      "question_id": "Q001",
+      "content": "Python中，以下哪个关键字用于定义函数？",
+      "options": ["def", "function", "func", "define"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "函数定义"],
+      "difficulty": "easy",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "Python使用def关键字来定义函数",
+      "tags": ["语法", "基础"]
+    },
+    {
+      "question_id": "Q002",
+      "content": "以下哪些是Python的内置数据类型？",
+      "options": ["list", "int", "array", "dict"],
+      "correct_answer": ["A", "B", "D"],
+      "knowledge_points": ["Python基础", "数据类型"],
+      "difficulty": "medium",
+      "question_type": "multiple_choice",
+      "score": 3,
+      "explanation": "Python内置数据类型包括list、int、dict等，array需要导入array模块",
+      "tags": ["数据结构", "基础"]
+    },
+    {
+      "question_id": "Q003",
+      "content": "Python中的列表是可变对象。",
+      "options": ["正确", "错误"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "列表"],
+      "difficulty": "easy",
+      "question_type": "true_false",
+      "score": 1,
+      "explanation": "列表(list)是可变对象，可以修改其中的元素",
+      "tags": ["数据结构"]
+    },
+    {
+      "question_id": "Q004",
+      "content": "以下代码的输出结果是什么？\n```python\nx = [1, 2, 3]\ny = x\ny.append(4)\nprint(x)\n```",
+      "options": ["[1, 2, 3]", "[1, 2, 3, 4]", "[4, 3, 2, 1]", "报错"],
+      "correct_answer": ["B"],
+      "knowledge_points": ["Python基础", "列表", "引用"],
+      "difficulty": "medium",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "y = x创建了引用，修改y也会影响x",
+      "tags": ["引用", "易错点"]
+    },
+    {
+      "question_id": "Q005",
+      "content": "Python中用于异常处理的关键字有哪些？",
+      "options": ["try", "except", "catch", "finally"],
+      "correct_answer": ["A", "B", "D"],
+      "knowledge_points": ["Python基础", "异常处理"],
+      "difficulty": "medium",
+      "question_type": "multiple_choice",
+      "score": 3,
+      "explanation": "Python使用try/except/finally进行异常处理，catch是Java/C#的关键字",
+      "tags": ["异常", "语法"]
+    },
+    {
+      "question_id": "Q006",
+      "content": "以下哪个是Python中正确的列表推导式？",
+      "options": [
+        "[x*2 for x in range(5)]",
+        "[x*2 | x in range(5)]",
+        "[x*2; x in range(5)]",
+        "list(x*2 for x in range(5))"
+      ],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "列表推导式"],
+      "difficulty": "hard",
+      "question_type": "single_choice",
+      "score": 3,
+      "explanation": "正确的列表推导式语法是[表达式 for 变量 in 可迭代对象]",
+      "tags": ["语法", "进阶"]
+    },
+    {
+      "question_id": "Q007",
+      "content": "Python中的元组(tuple)和列表(list)的主要区别是什么？",
+      "options": [
+        "元组是不可变的，列表是可变的",
+        "列表使用[]，元组使用()",
+        "元组只能存储数字",
+        "列表比元组占用更多内存"
+      ],
+      "correct_answer": ["A", "B"],
+      "knowledge_points": ["Python基础", "元组", "列表"],
+      "difficulty": "medium",
+      "question_type": "multiple_choice",
+      "score": 3,
+      "explanation": "元组不可变，使用()定义；列表可变，使用[]定义",
+      "tags": ["数据结构", "对比"]
+    },
+    {
+      "question_id": "Q008",
+      "content": "在Python中，None表示空值。",
+      "options": ["正确", "错误"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "空值"],
+      "difficulty": "easy",
+      "question_type": "true_false",
+      "score": 1,
+      "explanation": "None是Python中的空值对象",
+      "tags": ["基础"]
+    },
+    {
+      "question_id": "Q009",
+      "content": "以下哪个方法可以在列表末尾添加一个元素？",
+      "options": ["append()", "add()", "insert()", "extend()"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "列表方法"],
+      "difficulty": "easy",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "append()在末尾添加一个元素，extend()添加多个元素",
+      "tags": ["列表方法"]
+    },
+    {
+      "question_id": "Q010",
+      "content": "Python中的字典(dict)有哪些特点？",
+      "options": [
+        "键值对存储",
+        "键必须是不可变类型",
+        "值可以重复",
+        "键可以重复"
+      ],
+      "correct_answer": ["A", "B", "C"],
+      "knowledge_points": ["Python基础", "字典"],
+      "difficulty": "hard",
+      "question_type": "multiple_choice",
+      "score": 4,
+      "explanation": "字典键值对存储，键唯一且不可变，值可以重复",
+      "tags": ["数据结构", "进阶"]
+    },
+    {
+      "question_id": "Q011",
+      "content": "以下代码的输出是什么？\n```python\nd = {'a': 1, 'b': 2}\nprint(list(d.keys()))\n```",
+      "options": ["['a', 'b']", "[1, 2]", "['a': 1, 'b': 2]", "报错"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "字典方法"],
+      "difficulty": "medium",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "keys()返回所有键，用list()转换为列表",
+      "tags": ["字典方法"]
+    },
+    {
+      "question_id": "Q012",
+      "content": "Python中的字符串是不可变对象。",
+      "options": ["正确", "错误"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "字符串"],
+      "difficulty": "medium",
+      "question_type": "true_false",
+      "score": 2,
+      "explanation": "字符串是不可变对象，修改字符串会创建新对象",
+      "tags": ["字符串"]
+    },
+    {
+      "question_id": "Q013",
+      "content": "以下哪个是Python中正确的条件表达式（三元运算符）？",
+      "options": [
+        "x if condition else y",
+        "condition ? x : y",
+        "x when condition else y",
+        "if condition then x else y"
+      ],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "条件表达式"],
+      "difficulty": "hard",
+      "question_type": "single_choice",
+      "score": 3,
+      "explanation": "Python的三元运算符语法是：值1 if 条件 else 值2",
+      "tags": ["语法", "进阶"]
+    },
+    {
+      "question_id": "Q014",
+      "content": "Python中的循环语句有哪些？",
+      "options": ["for", "while", "do-while", "foreach"],
+      "correct_answer": ["A", "B"],
+      "knowledge_points": ["Python基础", "循环"],
+      "difficulty": "easy",
+      "question_type": "multiple_choice",
+      "score": 2,
+      "explanation": "Python有for和while循环，没有do-while和foreach",
+      "tags": ["流程控制"]
+    },
+    {
+      "question_id": "Q015",
+      "content": "以下哪种方式可以正确导入math模块的sqrt函数？",
+      "options": [
+        "from math import sqrt",
+        "import sqrt from math",
+        "include math.sqrt",
+        "import math"
+      ],
+      "correct_answer": ["A", "D"],
+      "knowledge_points": ["Python基础", "模块导入"],
+      "difficulty": "easy",
+      "question_type": "multiple_choice",
+      "score": 2,
+      "explanation": "可以用from...import导入特定函数，或用import导入整个模块",
+      "tags": ["模块", "导入"]
+    },
+    {
+      "question_id": "Q016",
+      "content": "Python中的range(1, 10, 2)会生成哪些数字？",
+      "options": ["1, 3, 5, 7, 9", "1, 2, 3, ..., 10", "2, 4, 6, 8, 10", "1, 3, 5, 7, 9, 11"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "range函数"],
+      "difficulty": "medium",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "range(start, stop, step)生成从start开始，步长为step，小于stop的数字",
+      "tags": ["内置函数"]
+    },
+    {
+      "question_id": "Q017",
+      "content": "以下哪些方法可以用来读取文件？",
+      "options": ["read()", "readline()", "readlines()", "readall()"],
+      "correct_answer": ["A", "B", "C"],
+      "knowledge_points": ["Python基础", "文件操作"],
+      "difficulty": "medium",
+      "question_type": "multiple_choice",
+      "score": 3,
+      "explanation": "read()读取全部，readline()读一行，readlines()读所有行到列表",
+      "tags": ["文件IO"]
+    },
+    {
+      "question_id": "Q018",
+      "content": "Python中的类使用class关键字定义。",
+      "options": ["正确", "错误"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "类定义"],
+      "difficulty": "easy",
+      "question_type": "true_false",
+      "score": 1,
+      "explanation": "Python使用class关键字定义类",
+      "tags": ["面向对象"]
+    },
+    {
+      "question_id": "Q019",
+      "content": "以下哪个方法是Python类的构造方法？",
+      "options": ["__init__", "__new__", "__construct", "__create__"],
+      "correct_answer": ["A"],
+      "knowledge_points": ["Python基础", "类方法"],
+      "difficulty": "medium",
+      "question_type": "single_choice",
+      "score": 2,
+      "explanation": "__init__是初始化方法，在对象创建后调用",
+      "tags": ["面向对象", "魔术方法"]
+    },
+    {
+      "question_id": "Q020",
+      "content": "Python中的装饰器有什么作用？",
+      "options": [
+        "修改函数的行为",
+        "增加函数的功能",
+        "删除函数",
+        "不修改原函数代码的前提下扩展功能"
+      ],
+      "correct_answer": ["A", "B", "D"],
+      "knowledge_points": ["Python基础", "装饰器"],
+      "difficulty": "hard",
+      "question_type": "multiple_choice",
+      "score": 4,
+      "explanation": "装饰器可以在不修改原函数代码的情况下扩展函数功能",
+      "tags": ["装饰器", "进阶"]
+    }
+  ]
+}
