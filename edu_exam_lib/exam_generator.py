@@ -510,7 +510,7 @@ class ExamGenerator:
                     line = f"  {p.version:<8}"
                     line += f"{display_num:<8}"
                     line += f"{correct:<12}"
-                    line += options_str[:50]
+                    line += options_str
                     lines.append(line)
                 else:
                     lines.append(f"  {p.version:<8}  （无此题）")
@@ -545,13 +545,56 @@ class ExamGenerator:
     def export_version_comparison(self, papers: List[ExamPaper],
                                   output_dir: str,
                                   file_prefix: str = "exam") -> str:
-        """导出版本对照文件"""
+        """导出版本对照文件（TXT + CSV）"""
         import os
+        import csv
         os.makedirs(output_dir, exist_ok=True)
 
         content = self.generate_version_comparison(papers)
-        output_file = os.path.join(output_dir, f"{file_prefix}_version_comparison.txt")
-        with open(output_file, 'w', encoding='utf-8') as f:
+        txt_file = os.path.join(output_dir, f"{file_prefix}_version_comparison.txt")
+        with open(txt_file, 'w', encoding='utf-8') as f:
             f.write(content)
 
-        return output_file
+        csv_file = os.path.join(output_dir, f"{file_prefix}_version_comparison.csv")
+        with open(csv_file, 'w', encoding='utf-8-sig', newline='') as f:
+            writer = csv.writer(f)
+            header = ['题目ID', '题目内容', '版本', '题号', '正确答案']
+            option_labels = sorted(papers[0].questions[0]['options'].keys()) if papers and papers[0].questions else ['A', 'B', 'C', 'D']
+            for label in option_labels:
+                header.append(f'选项{label}内容')
+            header.append('原始选项A映射到')
+            header.append('原始选项B映射到')
+            header.append('原始选项C映射到')
+            header.append('原始选项D映射到')
+            writer.writerow(header)
+
+            all_question_ids = []
+            seen_ids = set()
+            for p in papers:
+                for q in p.questions:
+                    if q['question_id'] not in seen_ids:
+                        all_question_ids.append(q['question_id'])
+                        seen_ids.add(q['question_id'])
+
+            version_question_map = {}
+            for p in papers:
+                vmap = {}
+                for q in p.questions:
+                    vmap[q['question_id']] = q
+                version_question_map[p.version] = vmap
+
+            for qid in all_question_ids:
+                for p in papers:
+                    q = version_question_map[p.version].get(qid)
+                    if q:
+                        correct = "".join(sorted(p.answer_key[qid]))
+                        row = [qid, q['content'], p.version, q['display_num'], correct]
+                        for label in option_labels:
+                            row.append(q['options'].get(label, ''))
+                        orig_labels = ['A', 'B', 'C', 'D']
+                        for orig in orig_labels:
+                            mapped = p.option_mapping.get(qid, {}).get(orig, '')
+                            row.append(mapped)
+                        writer.writerow(row)
+
+        return txt_file

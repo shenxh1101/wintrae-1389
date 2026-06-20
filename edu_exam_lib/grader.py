@@ -79,6 +79,7 @@ class ExamGrader:
             knowledge_mastery=knowledge_mastery,
             error_reasons=error_reasons,
             graded_at=datetime.now().isoformat(),
+            submitted_at=getattr(student_answer, 'submitted_at', None),
         )
 
     def _calculate_knowledge_mastery(
