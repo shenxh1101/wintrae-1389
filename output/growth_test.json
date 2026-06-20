@@ -1,0 +1,2386 @@
+{
+  "summary": {
+    "total_exams": 3,
+    "total_students": 4,
+    "total_results": 12,
+    "duplicate_count": 0,
+    "error_count": 0,
+    "duplicate_strategy": "已处理"
+  },
+  "exam_info": [
+    {
+      "exam_index": 1,
+      "paper_id": "31dd9102",
+      "student_count": 4,
+      "max_score": 18.0
+    },
+    {
+      "exam_index": 2,
+      "paper_id": "e0e351b9",
+      "student_count": 4,
+      "max_score": 19.0
+    },
+    {
+      "exam_index": 3,
+      "paper_id": "d7073ee6",
+      "student_count": 4,
+      "max_score": 20.0
+    }
+  ],
+  "duplicates": [],
+  "errors": [],
+  "student_summary": [
+    {
+      "student_id": "S004",
+      "student_name": "学生4",
+      "total_score": 51.0,
+      "max_possible_score": 57.0,
+      "avg_score": 17.0,
+      "exam_count": 3,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 15.0,
+          "max_score": 18.0,
+          "percentage": 83.3,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 17.0,
+          "max_score": 19.0,
+          "percentage": 89.5,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 19.0,
+          "max_score": 20.0,
+          "percentage": 95.0,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S003",
+      "student_name": "学生3",
+      "total_score": 36.0,
+      "max_possible_score": 57.0,
+      "avg_score": 12.0,
+      "exam_count": 3,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 8.0,
+          "max_score": 18.0,
+          "percentage": 44.4,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 15.0,
+          "max_score": 19.0,
+          "percentage": 79.0,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 13.0,
+          "max_score": 20.0,
+          "percentage": 65.0,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S002",
+      "student_name": "学生2",
+      "total_score": 29.0,
+      "max_possible_score": 57.0,
+      "avg_score": 9.7,
+      "exam_count": 3,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 10.0,
+          "max_score": 18.0,
+          "percentage": 55.6,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 7.0,
+          "max_score": 19.0,
+          "percentage": 36.8,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 12.0,
+          "max_score": 20.0,
+          "percentage": 60.0,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    },
+    {
+      "student_id": "S001",
+      "student_name": "学生1",
+      "total_score": 24.0,
+      "max_possible_score": 57.0,
+      "avg_score": 8.0,
+      "exam_count": 3,
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 7.0,
+          "max_score": 18.0,
+          "percentage": 38.9,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 15.0,
+          "max_score": 19.0,
+          "percentage": 79.0,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 2.0,
+          "max_score": 20.0,
+          "percentage": 10.0,
+          "has_score": true
+        }
+      ],
+      "missing_exams": []
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "student_id": "S004",
+      "student_name": "学生4",
+      "total_score": 51.0,
+      "avg_score": 17.0,
+      "exam_count": 3,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 15.0,
+          "max_score": 18.0,
+          "percentage": 83.3,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 17.0,
+          "max_score": 19.0,
+          "percentage": 89.5,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 19.0,
+          "max_score": 20.0,
+          "percentage": 95.0,
+          "has_score": true
+        }
+      ],
+      "has_duplicate": false,
+      "duplicate_count": 0,
+      "needs_manual_review": false
+    },
+    {
+      "rank": 2,
+      "student_id": "S003",
+      "student_name": "学生3",
+      "total_score": 36.0,
+      "avg_score": 12.0,
+      "exam_count": 3,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 8.0,
+          "max_score": 18.0,
+          "percentage": 44.4,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 15.0,
+          "max_score": 19.0,
+          "percentage": 79.0,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 13.0,
+          "max_score": 20.0,
+          "percentage": 65.0,
+          "has_score": true
+        }
+      ],
+      "has_duplicate": false,
+      "duplicate_count": 0,
+      "needs_manual_review": false
+    },
+    {
+      "rank": 3,
+      "student_id": "S002",
+      "student_name": "学生2",
+      "total_score": 29.0,
+      "avg_score": 9.7,
+      "exam_count": 3,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 10.0,
+          "max_score": 18.0,
+          "percentage": 55.6,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 7.0,
+          "max_score": 19.0,
+          "percentage": 36.8,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 12.0,
+          "max_score": 20.0,
+          "percentage": 60.0,
+          "has_score": true
+        }
+      ],
+      "has_duplicate": false,
+      "duplicate_count": 0,
+      "needs_manual_review": false
+    },
+    {
+      "rank": 4,
+      "student_id": "S001",
+      "student_name": "学生1",
+      "total_score": 24.0,
+      "avg_score": 8.0,
+      "exam_count": 3,
+      "missing_exams": [],
+      "exam_scores": [
+        {
+          "exam_index": 1,
+          "paper_id": "31dd9102",
+          "score": 7.0,
+          "max_score": 18.0,
+          "percentage": 38.9,
+          "has_score": true
+        },
+        {
+          "exam_index": 2,
+          "paper_id": "e0e351b9",
+          "score": 15.0,
+          "max_score": 19.0,
+          "percentage": 79.0,
+          "has_score": true
+        },
+        {
+          "exam_index": 3,
+          "paper_id": "d7073ee6",
+          "score": 2.0,
+          "max_score": 20.0,
+          "percentage": 10.0,
+          "has_score": true
+        }
+      ],
+      "has_duplicate": false,
+      "duplicate_count": 0,
+      "needs_manual_review": false
+    }
+  ],
+  "student_growth_profile": {
+    "S001": {
+      "student_id": "S001",
+      "student_name": "学生1",
+      "total_exams": 3,
+      "taken_exams": 3,
+      "weak_points": [
+        "元组",
+        "空值",
+        "列表方法",
+        "range函数",
+        "列表推导式",
+        "文件操作",
+        "引用"
+      ],
+      "improving_points": [
+        "循环"
+      ],
+      "declining_points": [
+        "函数定义",
+        "列表",
+        "Python基础",
+        "类定义",
+        "异常处理"
+      ],
+      "consecutive_weak_points": [
+        "元组",
+        "空值",
+        "列表方法",
+        "range函数",
+        "列表推导式",
+        "文件操作",
+        "引用",
+        "类定义",
+        "异常处理"
+      ],
+      "knowledge_points": {
+        "装饰器": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "类定义": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "函数定义": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "元组": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "空值": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表方法": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "模块导入": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "类方法": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "range函数": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "异常处理": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "Python基础": {
+          "avg_mastery": 0.4583,
+          "first_mastery": 0.5,
+          "last_mastery": 0.125,
+          "last_change": -0.625,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.5
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.75
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.125
+            }
+          ]
+        },
+        "循环": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "字典": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表推导式": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "文件操作": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "引用": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表": {
+          "avg_mastery": 0.5,
+          "first_mastery": 0.5,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.5
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "S002": {
+      "student_id": "S002",
+      "student_name": "学生2",
+      "total_exams": 3,
+      "taken_exams": 3,
+      "weak_points": [
+        "元组",
+        "空值",
+        "类方法",
+        "range函数",
+        "异常处理",
+        "列表推导式",
+        "引用"
+      ],
+      "improving_points": [
+        "循环",
+        "文件操作",
+        "模块导入",
+        "字典"
+      ],
+      "declining_points": [
+        "装饰器",
+        "类定义",
+        "函数定义",
+        "列表方法"
+      ],
+      "consecutive_weak_points": [
+        "元组",
+        "空值",
+        "类方法",
+        "range函数",
+        "异常处理",
+        "列表推导式",
+        "引用",
+        "装饰器",
+        "类定义",
+        "函数定义",
+        "列表方法"
+      ],
+      "knowledge_points": {
+        "装饰器": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "类定义": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "函数定义": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "元组": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "空值": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表方法": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "模块导入": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "类方法": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "range函数": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "异常处理": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "Python基础": {
+          "avg_mastery": 0.5417,
+          "first_mastery": 0.625,
+          "last_mastery": 0.625,
+          "last_change": 0.25,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.625
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.375
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.625
+            }
+          ]
+        },
+        "循环": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "字典": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "列表推导式": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "文件操作": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "引用": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.5,
+          "last_mastery": 0.5,
+          "last_change": -0.5,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.5
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.5
+            }
+          ]
+        }
+      }
+    },
+    "S003": {
+      "student_id": "S003",
+      "student_name": "学生3",
+      "total_exams": 3,
+      "taken_exams": 3,
+      "weak_points": [
+        "函数定义",
+        "元组",
+        "range函数",
+        "异常处理",
+        "循环",
+        "列表推导式"
+      ],
+      "improving_points": [
+        "空值",
+        "文件操作",
+        "字典",
+        "Python基础"
+      ],
+      "declining_points": [
+        "列表",
+        "类定义",
+        "引用"
+      ],
+      "consecutive_weak_points": [
+        "函数定义",
+        "元组",
+        "range函数",
+        "异常处理",
+        "循环",
+        "列表推导式",
+        "类定义",
+        "引用"
+      ],
+      "knowledge_points": {
+        "装饰器": {
+          "avg_mastery": 1.0,
+          "first_mastery": 1.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": true,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "类定义": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "函数定义": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "元组": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "空值": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "列表方法": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "模块导入": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "类方法": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "range函数": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "异常处理": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "Python基础": {
+          "avg_mastery": 0.625,
+          "first_mastery": 0.5,
+          "last_mastery": 0.625,
+          "last_change": -0.125,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.5
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.75
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.625
+            }
+          ]
+        },
+        "循环": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "字典": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "列表推导式": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "文件操作": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "引用": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表": {
+          "avg_mastery": 0.8333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.5,
+          "last_change": -0.5,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.5
+            }
+          ]
+        }
+      }
+    },
+    "S004": {
+      "student_id": "S004",
+      "student_name": "学生4",
+      "total_exams": 3,
+      "taken_exams": 3,
+      "weak_points": [
+        "类定义",
+        "空值",
+        "类方法"
+      ],
+      "improving_points": [
+        "元组",
+        "循环",
+        "文件操作",
+        "模块导入",
+        "Python基础",
+        "字典"
+      ],
+      "declining_points": [
+        "函数定义",
+        "异常处理",
+        "列表推导式",
+        "引用"
+      ],
+      "consecutive_weak_points": [
+        "类定义",
+        "空值",
+        "类方法",
+        "异常处理",
+        "列表推导式",
+        "引用"
+      ],
+      "knowledge_points": {
+        "装饰器": {
+          "avg_mastery": 1.0,
+          "first_mastery": 1.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": true,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "类定义": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "函数定义": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "元组": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "空值": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表方法": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "模块导入": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "类方法": {
+          "avg_mastery": 0.0,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": true,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 3,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "range函数": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 0.0,
+          "last_change": -1.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 1,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "异常处理": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "Python基础": {
+          "avg_mastery": 0.8333,
+          "first_mastery": 0.75,
+          "last_mastery": 0.875,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.75
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.875
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.875
+            }
+          ]
+        },
+        "循环": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "字典": {
+          "avg_mastery": 0.6667,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "列表推导式": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "文件操作": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 0.0,
+          "last_mastery": 1.0,
+          "last_change": 1.0,
+          "trend": "上升",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        },
+        "引用": {
+          "avg_mastery": 0.3333,
+          "first_mastery": 1.0,
+          "last_mastery": 0.0,
+          "last_change": 0.0,
+          "trend": "下降",
+          "is_weak": false,
+          "is_consistently_strong": false,
+          "consecutive_weak_count": 2,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 0.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 0.0
+            }
+          ]
+        },
+        "列表": {
+          "avg_mastery": 1.0,
+          "first_mastery": 1.0,
+          "last_mastery": 1.0,
+          "last_change": 0.0,
+          "trend": "平稳",
+          "is_weak": false,
+          "is_consistently_strong": true,
+          "consecutive_weak_count": 0,
+          "exam_count": 3,
+          "mastery_history": [
+            {
+              "exam_index": 1,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 2,
+              "has_score": true,
+              "mastery": 1.0
+            },
+            {
+              "exam_index": 3,
+              "has_score": true,
+              "mastery": 1.0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

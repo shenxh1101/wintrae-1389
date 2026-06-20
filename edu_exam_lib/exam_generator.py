@@ -27,10 +27,88 @@ class ExamGenerator:
         if seed is not None:
             random.seed(seed)
 
+        if rule.same_questions and rule.num_versions > 1:
+            return self._generate_same_questions_versions(rule, seed)
+
         papers = []
         for version_num in range(1, rule.num_versions + 1):
             version_seed = seed + version_num if seed is not None else None
             paper = self._generate_single_version(rule, version_num, version_seed)
+            papers.append(paper)
+
+        return papers
+
+    def _generate_same_questions_versions(self, rule: ExamRule,
+                                          seed: Optional[int]) -> List[ExamPaper]:
+        """生成同题多卷模式的试卷
+
+        先抽出一批题目，然后各版本只调整题号顺序和选项顺序
+        这样A/B/C卷的题目完全相同，只是题号顺序和选项顺序不同
+        """
+        base_seed = seed if seed is not None else random.randint(1, 1000000)
+        random.seed(base_seed)
+
+        candidate_questions = self.question_bank.filter_complex(
+            knowledge_points=rule.allowed_knowledge_points,
+            exclude_knowledge=rule.excluded_knowledge_points,
+        )
+
+        if rule.knowledge_points:
+            selected_questions = self.question_bank.select_by_knowledge_points(
+                rule.knowledge_points, rule.difficulty_ratio
+            )
+        else:
+            selected_questions = self.question_bank.select_by_difficulty_ratio(
+                candidate_questions,
+                rule.total_questions,
+                rule.difficulty_ratio
+            )
+
+        if len(selected_questions) < rule.total_questions:
+            raise ValueError(
+                f"题库中符合条件的题目不足，需要 {rule.total_questions} 道，"
+                f"实际只有 {len(selected_questions)} 道"
+            )
+
+        base_questions = selected_questions[:rule.total_questions]
+
+        papers = []
+        for version_num in range(1, rule.num_versions + 1):
+            version_seed = base_seed + version_num * 1000
+            random.seed(version_seed)
+
+            questions_for_version = base_questions.copy()
+            if rule.shuffle_questions:
+                random.shuffle(questions_for_version)
+
+            paper_questions = []
+            option_mapping = {}
+            answer_key = {}
+            total_score = 0.0
+
+            for idx, question in enumerate(questions_for_version, start=1):
+                processed_q, mapping, new_answer = self._process_question(
+                    question, idx, rule.shuffle_options
+                )
+                paper_questions.append(processed_q)
+                option_mapping[question.question_id] = mapping
+                answer_key[question.question_id] = new_answer
+                total_score += question.score
+
+            paper_id = str(uuid.uuid4())[:8]
+            version = chr(64 + version_num) if rule.num_versions > 1 else 'A'
+
+            paper = ExamPaper(
+                paper_id=paper_id,
+                version=version,
+                title=rule.exam_title,
+                duration=rule.exam_duration,
+                questions=paper_questions,
+                option_mapping=option_mapping,
+                answer_key=answer_key,
+                generated_at=datetime.now().isoformat(),
+                total_score=total_score,
+            )
             papers.append(paper)
 
         return papers

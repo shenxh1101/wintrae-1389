@@ -250,6 +250,7 @@ class ExamGrader:
     @staticmethod
     def merge_exam_results(results_list: List[List[ExamResult]]) -> MergeResult:
         """合并多场考试结果"""
+        all_results_list: List[ExamResult] = []
         merged: List[ExamResult] = []
         duplicates: List[Dict[str, Any]] = []
         missing_answers: List[Dict[str, Any]] = []
@@ -276,6 +277,7 @@ class ExamGrader:
 
         for exam_idx, results in enumerate(results_list, 1):
             for result in results:
+                all_results_list.append(result)
                 key = (result.student_id, result.paper_id)
                 seen[key].append({
                     'exam_index': exam_idx,
@@ -284,16 +286,18 @@ class ExamGrader:
 
         for (student_id, paper_id), entries in seen.items():
             if len(entries) > 1:
-                for entry in entries:
+                for i, entry in enumerate(entries):
                     duplicates.append({
                         'student_id': student_id,
                         'student_name': entry['result'].student_name,
                         'paper_id': paper_id,
                         'exam_index': entry['exam_index'],
                         'score': entry['result'].total_score,
+                        'kept': i == 0,
+                        'reason': '最早提交' if i == 0 else '重复-默认保留最早',
                     })
                 errors.append(
-                    f"学生 {student_id} 在试卷 {paper_id} 有 {len(entries)} 条重复记录"
+                    f"学生 {student_id} 在试卷 {paper_id} 有 {len(entries)} 条重复记录（默认保留最早）"
                 )
                 merged.append(entries[0]['result'])
             else:
@@ -304,20 +308,25 @@ class ExamGrader:
         student_summary = {}
         student_exams = defaultdict(dict)
 
-        for exam_idx, results in enumerate(results_list, 1):
-            for result in results:
-                sid = result.student_id
-                if sid not in student_summary:
-                    student_summary[sid] = {
-                        'student_id': sid,
-                        'student_name': result.student_name,
-                        'total_score': 0.0,
-                        'max_possible_score': 0.0,
-                        'avg_score': 0.0,
-                        'exam_count': 0,
-                        'exam_scores': [],
-                        'missing_exams': [],
-                    }
+        for result in merged:
+            sid = result.student_id
+            exam_idx = 0
+            for i, info in enumerate(exam_info, 1):
+                if info['paper_id'] == result.paper_id:
+                    exam_idx = i
+                    break
+            if sid not in student_summary:
+                student_summary[sid] = {
+                    'student_id': sid,
+                    'student_name': result.student_name,
+                    'total_score': 0.0,
+                    'max_possible_score': 0.0,
+                    'avg_score': 0.0,
+                    'exam_count': 0,
+                    'exam_scores': [],
+                    'missing_exams': [],
+                }
+            if exam_idx > 0:
                 student_exams[sid][exam_idx] = result
 
         for sid, summary in student_summary.items():
@@ -367,4 +376,5 @@ class ExamGrader:
             errors=errors,
             exam_info=exam_info,
             student_summary=student_summary,
+            all_results=all_results_list,
         )

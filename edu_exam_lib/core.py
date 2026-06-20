@@ -124,6 +124,7 @@ class ExamRule:
     exam_duration: int = 60
     allowed_knowledge_points: Optional[List[str]] = None
     excluded_knowledge_points: Optional[List[str]] = None
+    same_questions: bool = True
 
     def __post_init__(self):
         if self.difficulty_ratio is None:
@@ -361,6 +362,7 @@ class MergeResult:
     errors: List[str]
     exam_info: List[Dict[str, Any]] = field(default_factory=list)
     student_summary: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+    all_results: List[ExamResult] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -380,6 +382,146 @@ class MergeResult:
         """获取所有学生的汇总信息列表"""
         return sorted(self.student_summary.values(), key=lambda x: x['total_score'], reverse=True)
 
+    def resolve_duplicates(self, strategy: str = 'highest_score') -> 'MergeResult':
+        """处理重复提交记录
+
+        Args:
+            strategy: 处理策略
+                - 'highest_score': 保留最高分
+                - 'earliest': 保留最早提交的
+                - 'manual': 标记人工处理，保留所有记录但添加标记
+
+        Returns:
+            处理后的新MergeResult
+        """
+        from collections import defaultdict as dd
+
+        valid_strategies = {'highest_score', 'earliest', 'manual'}
+        if strategy not in valid_strategies:
+            raise ValueError(
+                f"未知的重复处理策略: {strategy}。"
+                f"可选策略: {', '.join(sorted(valid_strategies))}"
+            )
+
+        if not self.duplicates:
+            return MergeResult(
+                merged_results=list(self.merged_results),
+                duplicates=list(self.duplicates),
+                missing_answers=list(self.missing_answers),
+                errors=list(self.errors),
+                exam_info=[dict(x) for x in self.exam_info],
+                student_summary={k: dict(v) for k, v in self.student_summary.items()},
+                all_results=list(self.all_results),
+            )
+
+        results_by_key = dd(list)
+        for r in self.all_results:
+            key = (r.student_id, r.paper_id)
+            exam_idx = 0
+            for i, info in enumerate(self.exam_info, 1):
+                if info['paper_id'] == r.paper_id:
+                    exam_idx = i
+                    break
+            results_by_key[key].append({
+                'result': r,
+                'exam_index': exam_idx,
+            })
+
+        kept_results = []
+        resolved_duplicates = []
+        resolved_errors = []
+
+        for (student_id, paper_id), entries in results_by_key.items():
+            if len(entries) <= 1:
+                kept_results.append(entries[0]['result'])
+                continue
+
+            if strategy == 'highest_score':
+                best_entry = max(entries, key=lambda x: x['result'].total_score)
+                best = best_entry['result']
+                kept_results.append(best)
+
+                for entry in entries:
+                    is_kept = entry['result'] is best
+                    resolved_duplicates.append({
+                        'student_id': student_id,
+                        'student_name': entry['result'].student_name,
+                        'paper_id': paper_id,
+                        'exam_index': entry['exam_index'],
+                        'score': entry['result'].total_score,
+                        'kept': is_kept,
+                        'reason': '最高分' if is_kept else '重复-被覆盖(更低分)',
+                    })
+
+            elif strategy == 'earliest':
+                best = entries[0]['result']
+                kept_results.append(best)
+
+                for i, entry in enumerate(entries):
+                    is_kept = i == 0
+                    resolved_duplicates.append({
+                        'student_id': student_id,
+                        'student_name': entry['result'].student_name,
+                        'paper_id': paper_id,
+                        'exam_index': entry['exam_index'],
+                        'score': entry['result'].total_score,
+                        'kept': is_kept,
+                        'reason': '最早提交' if is_kept else '重复-被覆盖(非最早)',
+                    })
+
+            elif strategy == 'manual':
+                for entry in entries:
+                    kept_results.append(entry['result'])
+                    resolved_duplicates.append({
+                        'student_id': student_id,
+                        'student_name': entry['result'].student_name,
+                        'paper_id': paper_id,
+                        'exam_index': entry['exam_index'],
+                        'score': entry['result'].total_score,
+                        'kept': True,
+                        'reason': '人工处理-待确认',
+                        'manual_review_needed': True,
+                    })
+                resolved_errors.append(
+                    f"学生 {student_id}({entries[0]['result'].student_name}) "
+                    f"在试卷 {paper_id} 有 {len(entries)} 条重复记录（需人工处理）"
+                )
+
+        from edu_exam_lib.grader import ExamGrader
+        results_by_exam = dd(list)
+        for r in kept_results:
+            exam_idx = 0
+            for i, info in enumerate(self.exam_info, 1):
+                if info['paper_id'] == r.paper_id:
+                    exam_idx = i
+                    break
+            results_by_exam[exam_idx].append(r)
+
+        ordered_exams = []
+        for i in range(1, len(self.exam_info) + 1):
+            ordered_exams.append(results_by_exam.get(i, []))
+
+        new_merge = ExamGrader.merge_exam_results(ordered_exams)
+
+        new_merge.duplicates = resolved_duplicates
+        new_merge.all_results = list(self.all_results)
+
+        if strategy == 'manual':
+            new_merge.errors = list(resolved_errors)
+        else:
+            dup_students = set(
+                d['student_id'] for d in resolved_duplicates if not d.get('kept', False)
+            )
+            if dup_students:
+                new_merge.errors = [
+                    f"已处理重复记录 {len(resolved_duplicates)} 条，"
+                    f"涉及 {len(dup_students)} 名学生，策略: {strategy}"
+                ]
+            else:
+                new_merge.errors = []
+
+        return new_merge
+
     def get_knowledge_trend(self, student_id: str) -> Optional[Dict[str, Any]]:
         """获取指定学生的知识点掌握变化趋势
 
@@ -392,24 +534,63 @@ class MergeResult:
         if student_id not in self.student_summary:
             return None
 
-        student_results = [r for r in self.merged_results if r.student_id == student_id]
-        student_results.sort(key=lambda x: x.paper_id)
+        student_summary = self.student_summary[student_id]
+        exam_scores = student_summary.get('exam_scores', [])
+
+        result_by_exam = {}
+        for r in self.merged_results:
+            if r.student_id == student_id:
+                exam_idx = self._get_exam_index(r.paper_id)
+                if exam_idx > 0:
+                    result_by_exam[exam_idx] = r
+
+        all_kps = set()
+        for r in result_by_exam.values():
+            all_kps.update(r.knowledge_mastery.keys())
 
         kp_exam_scores = defaultdict(list)
-
-        for exam_idx, result in enumerate(student_results, 1):
-            for kp, mastery in result.knowledge_mastery.items():
-                kp_exam_scores[kp].append({
-                    'exam_index': exam_idx,
-                    'paper_id': result.paper_id,
-                    'mastery': mastery.get('mastery_ratio', 0),
-                    'correct_count': mastery.get('correct_count', 0),
-                    'total_count': mastery.get('total_count', 0),
-                })
+        for exam_idx in range(1, len(self.exam_info) + 1):
+            if exam_idx in result_by_exam:
+                result = result_by_exam[exam_idx]
+                for kp, mastery in result.knowledge_mastery.items():
+                    acc = mastery.get('accuracy', 0)
+                    mastery_ratio = acc / 100.0 if acc > 1 else acc
+                    kp_exam_scores[kp].append({
+                        'exam_index': exam_idx,
+                        'paper_id': result.paper_id,
+                        'has_score': True,
+                        'mastery': mastery_ratio,
+                        'correct_count': mastery.get('correct_count', 0),
+                        'total_count': mastery.get('total_count', 0),
+                    })
+                for kp in all_kps:
+                    if kp not in result.knowledge_mastery:
+                        kp_exam_scores[kp].append({
+                            'exam_index': exam_idx,
+                            'paper_id': result.paper_id,
+                            'has_score': True,
+                            'mastery': 0.0,
+                            'correct_count': 0,
+                            'total_count': 0,
+                        })
+            else:
+                paper_id = self.exam_info[exam_idx - 1]['paper_id'] if exam_idx <= len(self.exam_info) else ''
+                for kp in all_kps:
+                    kp_exam_scores[kp].append({
+                        'exam_index': exam_idx,
+                        'paper_id': paper_id,
+                        'has_score': False,
+                        'mastery': 0.0,
+                        'correct_count': 0,
+                        'total_count': 0,
+                    })
 
         kp_trend = {}
-        for kp, scores in kp_exam_scores.items():
-            mastery_values = [s['mastery'] for s in scores]
+        for kp in all_kps:
+            scores = kp_exam_scores.get(kp, [])
+            valid_scores = [s for s in scores if s['has_score']]
+            mastery_values = [s['mastery'] for s in valid_scores]
+
             if len(mastery_values) >= 2:
                 diff = mastery_values[-1] - mastery_values[0]
                 if diff > 0.1:
@@ -418,23 +599,42 @@ class MergeResult:
                     trend = '下降'
                 else:
                     trend = '平稳'
+                last_change = mastery_values[-1] - mastery_values[-2] if len(mastery_values) >= 2 else 0
+            elif len(mastery_values) == 1:
+                trend = '数据不足'
+                last_change = mastery_values[0]
             else:
                 trend = '数据不足'
+                last_change = 0
 
             weak_threshold = 0.6
-            is_weak = all(m < weak_threshold for m in mastery_values)
-            is_consistently_strong = all(m >= 0.8 for m in mastery_values)
+            is_weak = len(mastery_values) > 0 and all(m < weak_threshold for m in mastery_values)
+            is_consistently_strong = len(mastery_values) > 0 and all(m >= 0.8 for m in mastery_values)
+
+            consecutive_weak_count = 0
+            current_streak = 0
+            for s in reversed(valid_scores):
+                if s['mastery'] < weak_threshold:
+                    current_streak += 1
+                    consecutive_weak_count = max(consecutive_weak_count, current_streak)
+                else:
+                    break
 
             kp_trend[kp] = {
                 'knowledge_point': kp,
-                'exam_count': len(scores),
+                'exam_count': len(valid_scores),
+                'total_exams': len(self.exam_info),
                 'mastery_history': scores,
+                'valid_mastery_values': mastery_values,
                 'avg_mastery': sum(mastery_values) / len(mastery_values) if mastery_values else 0,
                 'first_mastery': mastery_values[0] if mastery_values else 0,
                 'last_mastery': mastery_values[-1] if mastery_values else 0,
+                'last_change': last_change,
                 'trend': trend,
                 'is_weak': is_weak,
                 'is_consistently_strong': is_consistently_strong,
+                'consecutive_weak_count': consecutive_weak_count,
+                'missing_exams': [s['exam_index'] for s in scores if not s['has_score']],
             }
 
         weak_kps = sorted(
@@ -443,22 +643,29 @@ class MergeResult:
         )
         improving_kps = sorted(
             [kp for kp, info in kp_trend.items() if info['trend'] == '上升'],
-            key=lambda kp: kp_trend[kp]['last_mastery'] - kp_trend[kp]['first_mastery'],
+            key=lambda kp: kp_trend[kp]['last_change'],
             reverse=True
         )
         declining_kps = sorted(
             [kp for kp, info in kp_trend.items() if info['trend'] == '下降'],
-            key=lambda kp: kp_trend[kp]['first_mastery'] - kp_trend[kp]['last_mastery'],
+            key=lambda kp: kp_trend[kp]['last_change'],
+        )
+        consecutive_weak_kps = sorted(
+            [kp for kp, info in kp_trend.items() if info['consecutive_weak_count'] >= 2],
+            key=lambda kp: kp_trend[kp]['consecutive_weak_count'],
             reverse=True
         )
 
         return {
             'student_id': student_id,
-            'student_name': self.student_summary[student_id]['student_name'],
+            'student_name': student_summary['student_name'],
+            'total_exams': len(self.exam_info),
+            'taken_exams': len(result_by_exam),
             'knowledge_points': kp_trend,
             'weak_points': weak_kps,
             'improving_points': improving_kps,
             'declining_points': declining_kps,
+            'consecutive_weak_points': consecutive_weak_kps,
         }
 
     def get_class_knowledge_trend(self) -> Dict[str, Any]:
@@ -474,7 +681,9 @@ class MergeResult:
             exam_idx = self._get_exam_index(result.paper_id)
             for kp, mastery in result.knowledge_mastery.items():
                 all_kps.add(kp)
-                exam_kp_avg[exam_idx][kp].append(mastery.get('mastery_ratio', 0))
+                acc = mastery.get('accuracy', 0)
+                mastery_ratio = acc / 100.0 if acc > 1 else acc
+                exam_kp_avg[exam_idx][kp].append(mastery_ratio)
 
         kp_class_trend = {}
         for kp in all_kps:
@@ -499,7 +708,9 @@ class MergeResult:
             weak_count = 0
             for result in self.merged_results:
                 if kp in result.knowledge_mastery:
-                    if result.knowledge_mastery[kp].get('mastery_ratio', 0) < 0.6:
+                    acc = result.knowledge_mastery[kp].get('accuracy', 0)
+                    mastery_ratio = acc / 100.0 if acc > 1 else acc
+                    if mastery_ratio < 0.6:
                         weak_count += 1
 
             kp_class_trend[kp] = {
@@ -657,17 +868,43 @@ class MergeResult:
             lines.append("\n" + "=" * 70)
             return "\n".join(lines)
 
-    def export_to_json(self, file_path: Optional[str] = None) -> str:
+    def export_to_json(self, file_path: Optional[str] = None,
+                        include_knowledge_trend: bool = True) -> str:
         """导出合并结果为JSON格式
 
-        包含：各场成绩、缺考场次、重复提交记录、汇总排名
+        包含：各场成绩、缺考场次、重复提交记录、汇总排名、知识点掌握趋势
 
         Args:
             file_path: 输出文件路径，不传则返回JSON字符串
+            include_knowledge_trend: 是否包含知识点掌握趋势（学生成长档案）
 
         Returns:
             JSON字符串或文件路径
         """
+        student_dup_info = defaultdict(lambda: {'count': 0, 'has_manual_review': False})
+        for dup in self.duplicates:
+            sid = dup['student_id']
+            student_dup_info[sid]['count'] += 1
+            if dup.get('manual_review_needed'):
+                student_dup_info[sid]['has_manual_review'] = True
+
+        ranking = []
+        for rank, s in enumerate(self.get_all_students_summary(), 1):
+            rank_info = {
+                'rank': rank,
+                'student_id': s['student_id'],
+                'student_name': s['student_name'],
+                'total_score': s['total_score'],
+                'avg_score': s['avg_score'],
+                'exam_count': s['exam_count'],
+                'missing_exams': s['missing_exams'],
+                'exam_scores': s['exam_scores'],
+                'has_duplicate': student_dup_info[s['student_id']]['count'] > 0,
+                'duplicate_count': student_dup_info[s['student_id']]['count'],
+                'needs_manual_review': student_dup_info[s['student_id']]['has_manual_review'],
+            }
+            ranking.append(rank_info)
+
         export_data = {
             'summary': {
                 'total_exams': len(self.exam_info),
@@ -675,25 +912,58 @@ class MergeResult:
                 'total_results': len(self.merged_results),
                 'duplicate_count': len(self.duplicates),
                 'error_count': len(self.errors),
+                'duplicate_strategy': (
+                    '未处理' if any(
+                        '条重复记录' in e and '已处理' not in e and '默认保留' not in e
+                        for e in self.errors
+                    ) else '已处理'
+                ),
             },
             'exam_info': self.exam_info,
             'duplicates': self.duplicates,
             'errors': self.errors,
             'student_summary': self.get_all_students_summary(),
-            'ranking': [
-                {
-                    'rank': rank,
-                    'student_id': s['student_id'],
-                    'student_name': s['student_name'],
-                    'total_score': s['total_score'],
-                    'avg_score': s['avg_score'],
-                    'exam_count': s['exam_count'],
-                    'missing_exams': s['missing_exams'],
-                    'exam_scores': s['exam_scores'],
-                }
-                for rank, s in enumerate(self.get_all_students_summary(), 1)
-            ],
+            'ranking': ranking,
         }
+
+        if include_knowledge_trend:
+            knowledge_trend_data = {}
+            for sid in self.student_summary:
+                trend = self.get_knowledge_trend(sid)
+                if trend:
+                    kp_summary = {}
+                    for kp, info in trend['knowledge_points'].items():
+                        kp_summary[kp] = {
+                            'avg_mastery': round(info['avg_mastery'], 4),
+                            'first_mastery': round(info['first_mastery'], 4),
+                            'last_mastery': round(info['last_mastery'], 4),
+                            'last_change': round(info['last_change'], 4),
+                            'trend': info['trend'],
+                            'is_weak': info['is_weak'],
+                            'is_consistently_strong': info['is_consistently_strong'],
+                            'consecutive_weak_count': info['consecutive_weak_count'],
+                            'exam_count': info['exam_count'],
+                            'mastery_history': [
+                                {
+                                    'exam_index': s['exam_index'],
+                                    'has_score': s['has_score'],
+                                    'mastery': round(s['mastery'], 4),
+                                }
+                                for s in info['mastery_history']
+                            ],
+                        }
+                    knowledge_trend_data[sid] = {
+                        'student_id': sid,
+                        'student_name': trend['student_name'],
+                        'total_exams': trend['total_exams'],
+                        'taken_exams': trend['taken_exams'],
+                        'weak_points': trend['weak_points'],
+                        'improving_points': trend['improving_points'],
+                        'declining_points': trend['declining_points'],
+                        'consecutive_weak_points': trend['consecutive_weak_points'],
+                        'knowledge_points': kp_summary,
+                    }
+            export_data['student_growth_profile'] = knowledge_trend_data
 
         json_str = json.dumps(export_data, ensure_ascii=False, indent=2, default=str)
 
@@ -706,13 +976,15 @@ class MergeResult:
 
         return json_str
 
-    def export_to_csv(self, file_path: Optional[str] = None) -> str:
+    def export_to_csv(self, file_path: Optional[str] = None,
+                       include_knowledge_summary: bool = True) -> str:
         """导出合并结果为CSV格式
 
-        包含：排名、学号、姓名、各场成绩、总分、平均分、参考场次、缺考场次、是否有重复提交
+        包含：排名、学号、姓名、各场成绩、总分、平均分、参考场次、缺考场次、重复提交信息
 
         Args:
             file_path: 输出文件路径，不传则返回CSV字符串
+            include_knowledge_summary: 是否包含知识点掌握概览
 
         Returns:
             CSV字符串或文件路径
@@ -725,12 +997,31 @@ class MergeResult:
             header.append(f'场次{i}成绩')
             header.append(f'场次{i}满分')
             header.append(f'场次{i}得分率%')
-        header.extend(['总分', '平均分', '参考场次', '缺考场次', '是否有重复提交', '重复次数'])
+        header.extend(['总分', '平均分', '参考场次', '缺考场次',
+                       '有重复提交', '重复次数', '需人工处理'])
+
+        if include_knowledge_summary:
+            all_kps = set()
+            for sid in self.student_summary:
+                trend = self.get_knowledge_trend(sid)
+                if trend:
+                    all_kps.update(trend['knowledge_points'].keys())
+            sorted_kps = sorted(all_kps)
+            for kp in sorted_kps:
+                header.append(f'{kp}平均分%')
+                header.append(f'{kp}趋势')
+                header.append(f'{kp}连续薄弱次数')
+
         writer.writerow(header)
 
-        student_dup_count = defaultdict(int)
+        student_dup_info = defaultdict(lambda: {'count': 0, 'manual': False})
         for dup in self.duplicates:
-            student_dup_count[dup['student_id']] += 1
+            sid = dup['student_id']
+            if not dup.get('kept', True):
+                continue
+            student_dup_info[sid]['count'] += 1
+            if dup.get('manual_review_needed'):
+                student_dup_info[sid]['manual'] = True
 
         for rank, s in enumerate(self.get_all_students_summary(), 1):
             row = [rank, s['student_id'], s['student_name']]
@@ -743,14 +1034,31 @@ class MergeResult:
                     row.append('缺考')
                     row.append(exam_score['max_score'])
                     row.append(0)
+            dup_info = student_dup_info.get(s['student_id'], {'count': 0, 'manual': False})
             row.extend([
                 s['total_score'],
                 s['avg_score'],
                 s['exam_count'],
                 ','.join([str(x) for x in s['missing_exams']]) if s['missing_exams'] else '',
-                '是' if student_dup_count.get(s['student_id'], 0) > 0 else '否',
-                student_dup_count.get(s['student_id'], 0),
+                '是' if dup_info['count'] > 1 else '否',
+                dup_info['count'],
+                '是' if dup_info['manual'] else '否',
             ])
+
+            if include_knowledge_summary:
+                trend = self.get_knowledge_trend(s['student_id'])
+                if trend:
+                    for kp in sorted_kps:
+                        kp_info = trend['knowledge_points'].get(kp)
+                        if kp_info:
+                            row.append(round(kp_info['avg_mastery'] * 100, 1))
+                            row.append(kp_info['trend'])
+                            row.append(kp_info['consecutive_weak_count'])
+                        else:
+                            row.append('')
+                            row.append('')
+                            row.append('')
+
             writer.writerow(row)
 
         csv_str = output.getvalue()
